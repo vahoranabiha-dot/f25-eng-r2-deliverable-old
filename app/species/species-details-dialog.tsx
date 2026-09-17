@@ -12,11 +12,14 @@ import {
 import { useState } from "react";
 
 interface Species {
+  id: number;
+  author: string;
   scientific_name: string;
   common_name: string | null;
   total_population: number | null;
-  kingdom: string;
+  kingdom: "Animalia" | "Plantae" | "Fungi" | "Protista" | "Archaea" | "Bacteria"
   description: string | null;
+  image: string | null;
 }
 
 export function SpeciesDetailsDialog({ species }: { species: Species }) {
