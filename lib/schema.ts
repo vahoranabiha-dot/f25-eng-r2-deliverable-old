@@ -1,4 +1,3 @@
-// Minimal schema for the app
 export interface Database {
   public: {
     Tables: {
@@ -10,6 +9,7 @@ export interface Database {
           biography: string | null;
         };
       };
+
       species: {
         Row: {
           id: number;
@@ -17,9 +17,16 @@ export interface Database {
           scientific_name: string;
           common_name: string | null;
           total_population: number | null;
-          kingdom: "Animalia" | "Plantae" | "Fungi" | "Protista" | "Archaea" | "Bacteria";
+          kingdom:
+            | "Animalia"
+            | "Plantae"
+            | "Fungi"
+            | "Protista"
+            | "Archaea"
+            | "Bacteria";
           description: string | null;
           image: string | null;
+          endangered: boolean;
         };
       };
     };

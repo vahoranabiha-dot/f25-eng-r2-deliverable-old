@@ -13,6 +13,7 @@ interface Species {
   kingdom: "Animalia" | "Plantae" | "Fungi" | "Protista" | "Archaea" | "Bacteria";
   description: string | null;
   image: string | null;
+  endangered: boolean;
 }
 
 export default function SpeciesCard({ species, sessionId }: { species: Species; sessionId: string }) {
@@ -23,25 +24,19 @@ export default function SpeciesCard({ species, sessionId }: { species: Species; 
           <Image src={species.image} alt={species.scientific_name} fill style={{ objectFit: "cover" }} />
         </div>
       )}
+
       <h3 className="mt-3 text-2xl font-semibold">{species.scientific_name}</h3>
+
       <h4 className="text-lg font-light italic">{species.common_name}</h4>
+      {species.endangered && <p className="mt-2 font-semibold text-red-600">⚠️ Endangered</p>}
+
       <p>{species.description ? species.description.slice(0, 150).trim() + "..." : ""}</p>
 
       <div className="mt-3 flex flex-col space-y-2">
         <SpeciesDetailsDialog species={species} />
 
         {sessionId === species.author && (
-          <EditSpeciesDialog
-            species={{
-              id: species.id,
-              scientific_name: species.scientific_name,
-              common_name: species.common_name,
-              kingdom: species.kingdom as "Animalia" | "Plantae" | "Fungi" | "Protista" | "Archaea" | "Bacteria",
-              total_population: species.total_population,
-              image: species.image,
-              description: species.description,
-            }}
-          />
+          <EditSpeciesDialog species={species} />
         )}
       </div>
     </div>

@@ -17,9 +17,10 @@ interface Species {
   scientific_name: string;
   common_name: string | null;
   total_population: number | null;
-  kingdom: "Animalia" | "Plantae" | "Fungi" | "Protista" | "Archaea" | "Bacteria"
+  kingdom: "Animalia" | "Plantae" | "Fungi" | "Protista" | "Archaea" | "Bacteria";
   description: string | null;
   image: string | null;
+  endangered: boolean;
 }
 
 export function SpeciesDetailsDialog({ species }: { species: Species }) {
@@ -36,6 +37,7 @@ export function SpeciesDetailsDialog({ species }: { species: Species }) {
       <DialogContent className="max-w-[500px] overflow-y-auto sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>{species.scientific_name}</DialogTitle>
+
           {species.common_name && <DialogDescription>{species.common_name}</DialogDescription>}
         </DialogHeader>
 
@@ -48,6 +50,13 @@ export function SpeciesDetailsDialog({ species }: { species: Species }) {
           <div>
             <p className="text-sm font-semibold text-muted-foreground">Total Population</p>
             <p>{species.total_population?.toLocaleString() ?? "Unknown"}</p>
+          </div>
+
+          <div>
+            <p className="text-sm font-semibold text-muted-foreground">Conservation Status</p>
+            <p className={species.endangered ? "font-semibold text-red-600" : ""}>
+              {species.endangered ? "⚠️ Endangered" : "Not currently marked as endangered"}
+            </p>
           </div>
 
           <div>

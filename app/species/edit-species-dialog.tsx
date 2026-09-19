@@ -15,6 +15,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import { createBrowserSupabaseClient } from "@/lib/client-utils";
+import type { Database } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState, type BaseSyntheticEvent } from "react";
@@ -44,33 +45,30 @@ const speciesSchema = z.object({
     .string()
     .nullable()
     .transform((val) => (!val || val.trim() === "" ? null : val.trim())),
+
+  endangered: z.boolean(),
 });
 
 type FormData = z.infer<typeof speciesSchema>;
 
+type Species = Database["public"]["Tables"]["species"]["Row"];
+
 export default function EditSpeciesDialog({
   species,
 }: {
-  species: {
-    id: number;
-    scientific_name: string;
-    common_name: string | null;
-    kingdom: "Animalia" | "Plantae" | "Fungi" | "Protista" | "Archaea" | "Bacteria";
-    total_population: number | null;
-    image: string | null;
-    description: string | null;
-  };
+  species: Species;
 }) {
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
 
-  const defaultValues: Partial<FormData> = {
+  const defaultValues: FormData = {
     scientific_name: species.scientific_name,
     common_name: species.common_name,
     kingdom: species.kingdom,
     total_population: species.total_population,
     image: species.image,
     description: species.description,
+    endangered: species.endangered,
   };
 
   const form = useForm<FormData>({
